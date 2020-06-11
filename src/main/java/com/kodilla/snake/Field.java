@@ -1,5 +1,6 @@
 package com.kodilla.snake;
 
+import com.kodilla.snake.demo.Main;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -9,24 +10,31 @@ public class Field extends Pane {
     private int w,h;
 
     ArrayList<Block> blocks = new ArrayList<Block>();
-    SnakeClass snake;
+    Snake snake;
 
     public Field(int width, int height){
         w = width;
         h = height;
 
-        setMinSize(w*GamePlayer.blockSize, h*GamePlayer.blockSize);
+        setMinSize(650, 575);
+        setLayoutX(25);
+        setLayoutY(100);
         setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-        setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
+        setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
+
     }
 
-    public void addSnakeClass(SnakeClass s){
-        snake= s;
+    public void addSnake(Snake s){
+        snake = s;
         for(Block b: s.blocks){
             addBlock(b);
         }
+    }
 
-
+    public void update(){
+        for(Block b:blocks) {
+            b.update();
+        }
     }
 
     private void addBlock(Block b){
