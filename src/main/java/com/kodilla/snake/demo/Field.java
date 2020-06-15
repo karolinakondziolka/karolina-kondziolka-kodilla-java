@@ -1,12 +1,14 @@
-package com.kodilla.snake;
+package com.kodilla.snake.demo;
 
-import com.kodilla.snake.demo.Main;
+
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
+
 public class Field extends Pane {
+
     private int w,h;
 
     ArrayList<Block> blocks = new ArrayList<Block>();
@@ -15,17 +17,15 @@ public class Field extends Pane {
     Food f;
     Snake snake;
 
-    public Field(int width, int height){
+
+    public Field(int width, int height) {
         w = width;
         h = height;
 
-        setMinSize(w,h);
-        setLayoutX(25);
-        setLayoutY(100);
+        setMinSize(w * Main.block_size, h * Main.block_size);
         setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
         setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
         addFood();
-
     }
 
     public void addSnake(Snake s){
@@ -34,19 +34,30 @@ public class Field extends Pane {
             addBlock(b);
         }
     }
-
     public void update(){
-        for(Block b:blocks) {
+        for(Block b:blocks){
             b.update();
         }
         if(isEaten(f)){
-            score += 10;
+            score +=10;
             addFood();
             addNewBlock();
+
         }
     }
 
-    public void addNewBlock() {
+    public boolean isDead(){
+        for(Block b: blocks){
+            if(b !=snake.head){
+                if(b.posX == snake.head.posX && b.posY == snake.head.posY) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void addNewBlock(){
         Block b = new Block(snake.tail.oldPosX, snake.tail.oldPosY, snake.tail, this);
         snake.tail = b;
         addBlock(b);
@@ -68,7 +79,7 @@ public class Field extends Pane {
     }
 
     public boolean isEaten(Food f){
-        if(f == null){
+        if(f== null){
             return false;
         }
         return f.getPosX() == snake.head.posX && f.getPosY() == snake.head.posY;
