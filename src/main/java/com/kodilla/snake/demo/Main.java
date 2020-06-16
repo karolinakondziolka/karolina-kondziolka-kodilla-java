@@ -81,27 +81,21 @@ public class Main extends Application {
                         al.setHeaderText("GAME OVER");
                         al.setContentText("Your score is: " + f.score);
                         Platform.runLater(al::showAndWait);
-                        root.getChildren().clear();
-                        f = new Field(width, height);
-                        f.addSnake(new Snake(il, f));
-                        score.setText("Score: 0");
-
-                        root.getChildren().addAll(f, score);
-                        start();
-
-                        al.setHeaderText("Game Over");
-                        al.setContentText("Your Score is: " + f.score);
-                        Platform.runLater(al::show);
-                        al.setOnHidden(e -> {
+                        al.setOnHiding(e -> {
                             root.getChildren().clear();
                             f = new Field(width, height);
                             f.addSnake(new Snake(il, f));
                             score.setText("Score: 0");
+
                             root.getChildren().addAll(f, score);
                             start();
+
                         });
+
+
                     }
                 }
+
             }
 
         };
