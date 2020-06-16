@@ -29,10 +29,12 @@ public class Snake {
 
     }
     public int getDirection(){
+
         return head.direction;
     }
 
     public void setDirection(int d){
+
         head.direction = d;
     }
 }

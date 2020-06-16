@@ -10,10 +10,8 @@ public class Block extends Rectangle {
     int posY;
     int oldPosX;
     int oldPosY;
-
     Block previous;
     int direction = RIGHT;
-
     int maxX, maxY;
 
     public Block(int x, int y, Block p, Field f) {

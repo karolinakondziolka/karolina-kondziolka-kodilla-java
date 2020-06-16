@@ -23,6 +23,8 @@ public class Field extends Pane {
         h = height;
 
         setMinSize(w * Main.block_size, h * Main.block_size);
+        setLayoutX(25);
+        setLayoutY(100);
         setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
         setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
         addFood();
