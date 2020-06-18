@@ -1,7 +1,5 @@
 package com.kodilla.snake.demo;
-
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 
 public class Snake {

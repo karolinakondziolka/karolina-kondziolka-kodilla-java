@@ -1,6 +1,4 @@
 package com.kodilla.snake.demo;
-
-
 import javafx.scene.shape.Rectangle;
 
 public class Block extends Rectangle {

@@ -26,7 +26,6 @@ public class Food extends Rectangle {
 
         setFill(Color.RED);
 
-
     }
 
     public int getPosX() {

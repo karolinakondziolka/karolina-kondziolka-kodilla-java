@@ -103,7 +103,6 @@ public class Main extends Application {
 
         root.getChildren().addAll(f, score);
 
-
         scene.setOnKeyPressed(e->{
             if(e.getCode().equals(KeyCode.UP) && f.snake.getDirection() !=Block.DOWN){
                 setDirection(f.snake, Block.UP);

@@ -1,9 +1,6 @@
 package com.kodilla.snake.demo;
-
-
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 
 
