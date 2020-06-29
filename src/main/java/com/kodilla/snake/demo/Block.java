@@ -1,4 +1,5 @@
 package com.kodilla.snake.demo;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class Block extends Rectangle {
@@ -9,7 +10,7 @@ public class Block extends Rectangle {
     int oldPosX;
     int oldPosY;
     Block previous;
-    int direction = RIGHT;
+    int direction = LEFT;
     int maxX, maxY;
 
     public Block(int x, int y, Block p, Field f) {

@@ -15,14 +15,16 @@ public class Snake {
         head = new Block(ipx, ipy, null, f);
         blocks.add(head);
 
-        head.setFill(Color.GRAY.desaturate());
-
+        head.setFill(Color.RED.desaturate());
         tail = head;
+
 
         for(int i=1; i<il; i++){
             Block b = new Block(ipx+i, ipy, tail, f);
             blocks.add(b);
             tail=b;
+            tail.setFill(Color.GREENYELLOW);
+            tail.setStroke(Color.DARKOLIVEGREEN);
         }
 
     }

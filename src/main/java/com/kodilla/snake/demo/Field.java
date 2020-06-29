@@ -11,6 +11,7 @@ public class Field extends Pane {
     ArrayList<Block> blocks = new ArrayList<Block>();
 
     int score = 0;
+    int speed = 8;
     Food f;
     Snake snake;
 
@@ -22,7 +23,7 @@ public class Field extends Pane {
         setMinSize(w * Main.block_size, h * Main.block_size);
         setLayoutX(25);
         setLayoutY(100);
-        setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+        setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
         setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
         addFood();
     }
@@ -41,6 +42,9 @@ public class Field extends Pane {
             score +=10;
             addFood();
             addNewBlock();
+            speed++;
+            isDead();
+
 
         }
     }
@@ -59,6 +63,8 @@ public class Field extends Pane {
     public void addNewBlock(){
         Block b = new Block(snake.tail.oldPosX, snake.tail.oldPosY, snake.tail, this);
         snake.tail = b;
+        snake.tail.setFill(Color.GREENYELLOW);
+        snake.tail.setStroke(Color.DARKOLIVEGREEN);
         addBlock(b);
     }
 

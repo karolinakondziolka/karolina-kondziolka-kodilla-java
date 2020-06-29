@@ -1,6 +1,10 @@
 package com.kodilla.snake;
 
+import com.kodilla.snake.demo.Main;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -9,7 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 
 
 
@@ -35,9 +39,11 @@ public class Menu extends Application {
             newGame.setPrefSize(150, 15);
             newGame.setText("New Game");
             newGame.setFont(new Font("Arial",14));
-            newGame.setOnAction((e)->{
-                System.out.println("Start new game");
-            });
+            newGame.setOnAction(
+
+                    event -> {
+//                        Platform.runLater(() -> Main.restart());
+                    });
             newGame.setPadding(new Insets(12));
             newGame.setLayoutX(275);
             newGame.setLayoutY(100);
@@ -86,4 +92,5 @@ public class Menu extends Application {
             primaryStage.show();
 
         }
+
 }

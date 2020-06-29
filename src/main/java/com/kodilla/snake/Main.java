@@ -1,6 +1,5 @@
 package com.kodilla.snake;
 
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -11,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -20,12 +20,14 @@ public class Main extends Application {
 
     private Button saveGame;
 
-    static int blockSize = 15;
-    int width =650;
-    int height = 575;
+    static int blockSize = 10;
+    int width = 60;
+    int height = 60;
     int il = 4;
     long then = System.nanoTime();
-
+    boolean changed = false;
+    int nextUpdate;
+    boolean hasNext = false;
 
 
     @Override
@@ -40,7 +42,7 @@ public class Main extends Application {
         f.addSnake(new Snake(il, f));
 
         Label score = new Label("Score:0");
-        score.setFont(new Font("Arial",16));
+        score.setFont(new Font("Arial", 16));
         score.setLayoutX(40);
         score.setLayoutY(40);
 
@@ -49,51 +51,61 @@ public class Main extends Application {
                 if (now - then > 1000000000 / 8) {
                     f.update();
                     then = now;
-                    score.setText("Score: "+f.score);
+                    score.setText("Score: " + f.score);
+                    changed = false;
                 }
             }
         };
         timer.start();
 
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.UP) && f.snake.getDirection() != Block.DOWN) {
+                setDirection(f.snake, Block.UP);
+            }
 
-        scene.setOnKeyPressed(e-> {
-            if(e.getCode().equals(KeyCode.UP) && f.snake.getDirection() !=Block.DOWN){
-                f.snake.setDirection(Block.UP);
+            if (e.getCode().equals(KeyCode.DOWN) && f.snake.getDirection() != Block.UP) {
+                setDirection(f.snake, Block.DOWN);
             }
-            if(e.getCode().equals(KeyCode.DOWN) && f.snake.getDirection() !=Block.UP){
-                f.snake.setDirection(Block.DOWN);
+            if (e.getCode().equals(KeyCode.RIGHT) && f.snake.getDirection() != Block.LEFT) {
+                setDirection(f.snake, Block.RIGHT);
             }
-            if(e.getCode().equals(KeyCode.RIGHT) && f.snake.getDirection() !=Block.LEFT){
-                f.snake.setDirection(Block.RIGHT);
-            }
-            if(e.getCode().equals(KeyCode.LEFT) && f.snake.getDirection() !=Block.RIGHT){
-                f.snake.setDirection(Block.LEFT);
+            if (e.getCode().equals(KeyCode.LEFT) && f.snake.getDirection() != Block.RIGHT) {
+                setDirection(f.snake, Block.LEFT);
             }
         });
 
         saveGame = new Button();
         saveGame.setPrefSize(150, 15);
         saveGame.setText("Save Game");
-        saveGame.setFont(new Font("Arial",14));
-        saveGame.setOnAction(e->{
+        saveGame.setFont(new Font("Arial", 14));
+        saveGame.setOnAction(e -> {
             System.out.println("Game saved");
         });
         saveGame.setPadding(new Insets(12));
         saveGame.setLayoutX(520);
         saveGame.setLayoutY(30);
 
-        Rectangle r = new Rectangle(25,25,650,50);
+        Rectangle r = new Rectangle(25, 25, 650, 50);
         r.setFill(Color.GRAY);
 
-        root.getChildren().addAll(imageView);
-        root.getChildren().add(r);
+//        root.getChildren().addAll(imageView);
+//        root.getChildren().add(r);
         root.getChildren().add(saveGame);
         root.getChildren().addAll(f, score);
         stage.setTitle("Snake");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-
     }
 
+    public void setDirection(Snake s, int d){
+        if(!changed) {
+            s.setDirection(d);
+            changed = true;
+        }else{
+            hasNext = true;
+            nextUpdate = d;
+        }
+    }
 }
+
