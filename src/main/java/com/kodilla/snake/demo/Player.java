@@ -1,16 +1,11 @@
 package com.kodilla.snake.demo;
 
-import javafx.scene.control.Label;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.io.Serializable;
 
-public class Player implements Comparable<Player> {
-    private final String playerName;
-    private final int playerScore;
-    static List<Player> playerHighScores = new ArrayList<>();
-
+public class Player implements Serializable {
+    private String playerName;
+    private int playerScore;
 
     public Player(String playerName, int playerScore) {
         this.playerName = playerName;
@@ -18,28 +13,18 @@ public class Player implements Comparable<Player> {
 
     }
 
+    public int addPoints() {
+        playerScore += 10;
+        return playerScore;
+    }
+
     public String getPlayerName() {
         return playerName;
     }
 
     public int getPlayerScore() {
+        System.out.println(playerScore);
         return playerScore;
-    }
-
-    public static void displayPlayerHighScores() {
-        Collections.sort(playerHighScores, Collections.reverseOrder());
-        for (int i = 0; i < playerHighScores.size(); i++) {
-            System.out.println((i + 1) + ": " + playerHighScores.get(i));
-        }
-    }
-
-    public static List<Player> getPlayersHighScores() {
-        Collections.sort(playerHighScores, Collections.reverseOrder());
-        return playerHighScores;
-    }
-
-    public static void addPlayerToHighScores(Player p) {
-        playerHighScores.add(p);
     }
 
     @Override
@@ -51,11 +36,6 @@ public class Player implements Comparable<Player> {
 
         if (playerScore != player.playerScore) return false;
         return playerName != null ? playerName.equals(player.playerName) : player.playerName == null;
-    }
-
-    @Override
-    public int compareTo(Player player) {
-        return (Integer.compare(this.getPlayerScore(), player.getPlayerScore()));
     }
 
     @Override
