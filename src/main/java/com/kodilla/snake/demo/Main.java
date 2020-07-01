@@ -18,7 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,11 +25,11 @@ import java.util.List;
 
 
 public class Main extends Application {
-    private static final String name = "player";
+
+    private static final String name = "Gracz";
     static int block_size = 20;
-    //    int scoreValue = 0;
     int width = 30, height = 26;
-    int il = 4;
+    int il = 10;
     long then = System.nanoTime();
     boolean changed = false;
     int nextUpdate;
@@ -42,7 +41,7 @@ public class Main extends Application {
     Field f;
     String playerName = "Player";
     Group root = new Group();
-    Label score = new Label("Score: ");
+    Label score = new Label("Score: 0");
     Gson gson = new Gson();
     Scene scene = new Scene(root, 650, 650);
     ImageView imageView = new ImageView(new Image("background.jpeg"));
@@ -60,21 +59,20 @@ public class Main extends Application {
         r.setFill(Color.GRAY);
         root.getChildren().addAll(imageView, r);
 
-        f = new Field(width, height);
+        f = new Field(width, height, player);
         f.addSnake(new Snake(il, f));
 
         score.setFont(Font.font("Arial", 20));
         score.setLayoutX(40);
         score.setLayoutY(40);
 
-//        Player.playerHighScores = loadData();
 
         AnimationTimer timer = new AnimationTimer() {
             public void handle(long now) {
                 if (now - then > 1000000000 / f.speed) {
                     f.update();
                     then = now;
-                    score.setText("Score: " + f.score);
+                    score.setText("Score: " + player.getPlayerScore());
                     changed = false;
                     if (hasNext) {
                         setDirection(f.snake, nextUpdate);
@@ -86,12 +84,14 @@ public class Main extends Application {
 
                     Alert al = new Alert(Alert.AlertType.INFORMATION);
                     al.setHeaderText("GAME OVER");
-                    al.setContentText("Your score is: " + f.score + "\n" + "Would you like to play again?");
+                    al.setContentText("Your score is: " + player.getPlayerScore() + "\n" + "Would you like to play again?");
                     Platform.runLater(al::showAndWait);
+                    saveData();
                     displayGameOverMessage();
                     al.setOnHiding(e -> {
                         root.getChildren().clear();
-                        f = new Field(width, height);
+                        player.setPoints(0);
+                        f = new Field(width, height, player);
                         f.addSnake(new Snake(il, f));
                         score.setText("Score: 0");
                         root.getChildren().addAll(imageView, r, score, newGame, saveGame, loadGame, f, scores);
@@ -138,8 +138,8 @@ public class Main extends Application {
         saveGame.setFont(new Font("Arial", 14));
         saveGame.setOnAction(e -> {
             saveData();
+            player.getPlayerScore();
         });
-
         saveGame.setPadding(new Insets(12));
         saveGame.setLayoutX(300);
         saveGame.setLayoutY(30);
@@ -160,7 +160,9 @@ public class Main extends Application {
         scores.setText("Scores");
         scores.setFont(new Font("Arial", 14));
         scores.setOnAction(event -> {
-            player.getPlayerScore();
+            System.out.println("Best scores:");
+            loadData();
+            player.displayPlayerHighScores();
         });
         scores.setPadding(new Insets(12));
         scores.setLayoutX(520);
@@ -176,15 +178,12 @@ public class Main extends Application {
 
     private void cleanUp() {
         root.getChildren().clear();
-        f = new Field(width, height);
+        player.setPoints(0);
+        f = new Field(width, height, player);
         f.addSnake(new Snake(il, f));
         score.setText("Score: 0");
-        player = new Player(name, 0);
+        player = new Player(name, f.score);
     }
-//    private void addPlayerToHighScores() {
-//        Player player = new Player(playerName, scoreValue);
-//        Player.addPlayerToHighScores(player);
-//    }
 
     public void setDirection(Snake s, int d) {
         if (!changed) {
@@ -199,9 +198,22 @@ public class Main extends Application {
     private void saveData() {
 
         try {
-            Writer writer = new FileWriter("snakeHighScoresList.json");
+            List<PlayerInfo> listFromJson = new ArrayList<>();
+            try (Reader reader = new FileReader("snakeHighScoresList.json")) {
+                Type playerListType = new TypeToken<List<PlayerInfo>>() {
+                }.getType();
+                listFromJson = gson.fromJson(reader, playerListType);
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Cant find file " + e);
+            }
 
-            new Gson().toJson(player, writer);
+            Writer writer = new FileWriter("snakeHighScoresList.json");
+            PlayerInfo playerInfo = new PlayerInfo(player.getPlayerName(), player.getPlayerScore());
+            listFromJson.add(playerInfo);
+            new Gson().toJson(listFromJson, writer);
+
             writer.close();
 
         } catch (IOException e) {
@@ -210,18 +222,28 @@ public class Main extends Application {
         }
     }
 
-    private List<Player> loadData() {
+    private void loadData() {
+
         Gson gson = new Gson();
-        List<Player> listFromJson = new ArrayList<>();
+
+        List<PlayerInfo> listFromJson = new ArrayList<>();
         try (Reader reader = new FileReader("snakeHighScoresList.json")) {
-            Type playerListType = new TypeToken<ArrayList<Player>>() {
-            }.getType();
+            Type playerListType = new TypeToken<List<PlayerInfo>>(){}.getType();
             listFromJson = gson.fromJson(reader, playerListType);
+            player.clearHighScores();
+            for(int i=0; i<listFromJson.size(); i++){
+                player.addPlayerToHighScores(listFromJson.get(i));
+            }
+            int index = listFromJson.size()-1;
+            PlayerInfo playerInfo = listFromJson.get(index);
+            int score = playerInfo.score;
+            player.setPoints(score);
+
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Cant find file " + e);
         }
-        return listFromJson;
     }
 
     private void displayGameOverMessage() {
@@ -229,11 +251,11 @@ public class Main extends Application {
         sb.append("Game over ");
         sb.append(playerName);
         sb.append(", you score is: ");
-        sb.append(f.score);
+        sb.append(player.getPlayerScore());
         sb.append("\n");
         sb.append("HighScores:");
         System.out.println(sb);
-
-        player.getPlayerScore();
+        loadData();
+        player.displayPlayerHighScores();
     }
 }

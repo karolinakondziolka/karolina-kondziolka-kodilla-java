@@ -1,11 +1,16 @@
 package com.kodilla.snake.demo;
 
-
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Player implements Serializable {
+
     private String playerName;
     private int playerScore;
+
+
+    public List<PlayerInfo> playersHighScores = new ArrayList<>();
 
     public Player(String playerName, int playerScore) {
         this.playerName = playerName;
@@ -13,9 +18,16 @@ public class Player implements Serializable {
 
     }
 
-    public int addPoints() {
-        playerScore += 10;
-        return playerScore;
+    public void clearHighScores(){
+        playersHighScores.clear();
+    }
+
+    public void addPoints(int number) {
+        this.playerScore += number;
+    }
+
+    public void setPoints(int number){
+        this.playerScore = number;
     }
 
     public String getPlayerName() {
@@ -23,8 +35,21 @@ public class Player implements Serializable {
     }
 
     public int getPlayerScore() {
-        System.out.println(playerScore);
         return playerScore;
+    }
+    public void addPlayerToHighScores(PlayerInfo player) {
+        if(playerName.equals(player.name)){
+            playersHighScores.add(player);
+        }
+
+    }
+    public List<PlayerInfo> getPlayersHighScores() {
+        return playersHighScores;
+    }
+    public void displayPlayerHighScores() {
+        for (int i = 0; i < playersHighScores.size(); i++) {
+            System.out.println( playersHighScores.get(i).score);
+        }
     }
 
     @Override
@@ -47,6 +72,7 @@ public class Player implements Serializable {
 
     @Override
     public String toString() {
-        return "Player: " + playerName + " --- " + "Score: " + playerScore;
+        return "Player: " + playerName + "    " + "Score: " + playerScore;
     }
+
 }

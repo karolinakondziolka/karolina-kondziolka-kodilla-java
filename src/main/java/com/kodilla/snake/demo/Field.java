@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Field extends Pane {
 
     private int w,h;
-
+    Player player;
     ArrayList<Block> blocks = new ArrayList<Block>();
 
     int score = 0;
@@ -16,9 +16,10 @@ public class Field extends Pane {
     Snake snake;
 
 
-    public Field(int width, int height) {
+    public Field(int width, int height, Player player) {
         w = width;
         h = height;
+        this.player= player;
 
         setMinSize(w * Main.block_size, h * Main.block_size);
         setLayoutX(25);
@@ -27,7 +28,9 @@ public class Field extends Pane {
         setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1))));
         addFood();
     }
-
+    public void setScore(int number){
+        this.score = number;
+    }
     public void addSnake(Snake s){
         snake = s;
         for(Block b: s.blocks){
@@ -39,12 +42,12 @@ public class Field extends Pane {
             b.update();
         }
         if(isEaten(f)){
+            this.player.addPoints(10);
             score +=10;
             addFood();
             addNewBlock();
             speed++;
             isDead();
-
 
         }
     }
