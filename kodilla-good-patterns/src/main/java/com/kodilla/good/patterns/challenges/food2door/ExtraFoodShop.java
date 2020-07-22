@@ -29,6 +29,8 @@ public class ExtraFoodShop implements Producer {
 
     @Override
     public void process(OrderRequest orderRequest) {
+        System.out.println("Product from "+ orderRequest.getProducerName()+ " has been ordered");
+
 
     }
 }
