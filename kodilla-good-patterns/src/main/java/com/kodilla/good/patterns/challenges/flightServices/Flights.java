@@ -43,4 +43,13 @@ public class Flights {
         result = 31 * result + departureAirport.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Flights{" +
+                "arrivalAirport='" + arrivalAirport + '\'' +
+                ", transferAirport='" + transferAirport + '\'' +
+                ", departureAirport='" + departureAirport + '\'' +
+                '}';
+    }
 }

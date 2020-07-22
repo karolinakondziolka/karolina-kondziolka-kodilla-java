@@ -15,4 +15,5 @@ public class FlightsMap {
 
         return flightsParameters;
     }
+
 }
