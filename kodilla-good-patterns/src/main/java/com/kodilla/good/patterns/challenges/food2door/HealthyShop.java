@@ -28,8 +28,9 @@ public class HealthyShop implements Producer {
     }
 
     @Override
-    public void process(OrderRequest orderRequest) {
+    public boolean process(OrderRequest orderRequest) {
         System.out.println("Order has been confirmed:" + orderRequest.getProductType() + "\n weight of product:" + orderRequest.getProductWeight());
+        return false;
 
     }
 }

@@ -28,8 +28,9 @@ public class GlutenFreeShop implements Producer {
     }
 
     @Override
-    public void process(OrderRequest orderRequest) {
+    public boolean process(OrderRequest orderRequest) {
         System.out.println("Order received, available quantity:" + orderRequest.getProductQuantity());
 
+        return false;
     }
 }

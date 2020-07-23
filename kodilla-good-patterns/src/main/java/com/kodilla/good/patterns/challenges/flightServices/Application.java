@@ -3,9 +3,7 @@ package com.kodilla.good.patterns.challenges.flightServices;
 public class Application {
     public static void main(String[] args) {
 
-        String airport = "WAW";
-
-        Flights flights = new Flights(airport, airport, airport);
+        String airport = "GDK";
 
         FlightsFinder flightsFinder = new FlightsFinder();
         System.out.println("Flights from/to/through:" +airport);

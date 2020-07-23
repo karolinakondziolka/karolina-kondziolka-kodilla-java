@@ -8,5 +8,5 @@ public interface Producer {
     double getProductWeight();
 
 
-    void process(OrderRequest orderRequest);
+    boolean process(OrderRequest orderRequest);
 }
