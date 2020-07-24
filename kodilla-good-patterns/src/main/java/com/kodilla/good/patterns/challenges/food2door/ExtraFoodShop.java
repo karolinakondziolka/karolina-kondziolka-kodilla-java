@@ -9,11 +9,7 @@ public class ExtraFoodShop implements Producer {
     static String productType;
     int productQuantity;
     static double productWeight;
-    private OrderRequest order;
 
-    public ExtraFoodShop(void order) {
-        this.order = order;
-    }
 
     public static Map<String, Double> getProductList() {
 
@@ -22,13 +18,6 @@ public class ExtraFoodShop implements Producer {
         productList.put("marchewka", 40.0);
 
         return productList;
-    }
-
-    public void shopOrder(){
-    getProductList().entrySet().stream()
-            .filter(e->e.getKey().equals(getProductType()))
-            .filter(e-> e.getValue()<=getProductWeight())
-            .forEach(System.out::println);
     }
 
 
@@ -54,10 +43,17 @@ public class ExtraFoodShop implements Producer {
 
     @Override
     public boolean process(OrderRequest orderRequest) {
-       getProductList().entrySet().stream()
-                .filter(e -> e.getKey().equals(getProductType()))
-                .filter(e -> e.getValue() <= getProductWeight())
-                .forEach(System.out::println);
+        Map<String, Double> productList =  getProductList();
+        Double quantity = productList.get(orderRequest.getProductType());
+        if(quantity>= orderRequest.getProductWeight()){
+            System.out.println("Order has been sent");
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 
 
 }
