@@ -29,7 +29,7 @@ public class Main extends Application {
     private static final String name = "Gracz";
     static int block_size = 20;
     int width = 30, height = 26;
-    int il = 10;
+    int il = 4;
     long then = System.nanoTime();
     boolean changed = false;
     int nextUpdate;
