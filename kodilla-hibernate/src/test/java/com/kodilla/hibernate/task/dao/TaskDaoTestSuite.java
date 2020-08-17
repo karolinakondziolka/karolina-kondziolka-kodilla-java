@@ -48,12 +48,13 @@ public class TaskDaoTestSuite {
         List<Task> readTasks = taskDao.findByDuration(duration);
 
         //Then
-        Assert.assertEquals(1, readTasks.size());
-
-        //CleanUp
-        int id = readTasks.get(0).getId();
-        taskDao.deleteById(id);
+        try {
+            Assert.assertEquals(1, readTasks.size());
+        } finally {
+            taskDao.deleteAll();
+        }
     }
+
 
     @Test
     public void testTaskDaoSaveWithFinancialDetails() {

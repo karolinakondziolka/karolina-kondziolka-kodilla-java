@@ -27,7 +27,7 @@ public class Item {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @NotNull
     @Column(name = "ITEM_ID", unique = true)
     public int getId() {

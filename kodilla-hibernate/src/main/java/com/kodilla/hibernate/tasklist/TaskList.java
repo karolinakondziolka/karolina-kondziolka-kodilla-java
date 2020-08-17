@@ -1,8 +1,11 @@
 package com.kodilla.hibernate.tasklist;
 
-import com.sun.istack.NotNull;
+import com.kodilla.hibernate.task.Task;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TASKLIST")
@@ -10,17 +13,19 @@ public class TaskList {
     int id;
     String listName;
     String description;
+    private List<Task> tasks = new ArrayList<>();
 
-    public TaskList(){}
+    public TaskList(String LISTNAME, String toDo_tasks){}
 
     public TaskList(int id, String listName, String description) {
         this.id = id;
         this.listName = listName;
         this.description = description;
+
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @NotNull
     @Column(name = "ID", unique = true)
     public int getId() {
@@ -37,6 +42,16 @@ public class TaskList {
         return description;
     }
 
+    @OneToMany(
+            targetEntity = Task.class,
+            mappedBy = "taskList",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     private void setId(int id) {
         this.id = id;
     }
@@ -47,5 +62,9 @@ public class TaskList {
 
     private void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }
